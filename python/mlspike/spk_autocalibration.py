@@ -167,7 +167,7 @@ def _detect_events(calcium, n, fit, drift, pax, par):
             i += 1
             continue
         kept_events.append(idx1 * dt)
-        kept_nn[idx1] = round(ni * par["a"] * PERCENT_SCALE)
+        kept_nn[idx1] = int(round(ni * par["a"] * PERCENT_SCALE))
         lastevent = tj
         i += 1
 

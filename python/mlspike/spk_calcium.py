@@ -118,7 +118,7 @@ def _forward(spikes: np.ndarray, par: Dict[str, Any]):
             if 1 <= ik <= nt:
                 increase[ik - 1] += np.exp(-(((ik - 1) * dt - tk) / tau))
         decay = np.exp(-dt / tau)
-        ct = 0.0 if par.get("x0") is None else par.get("x0", 0.0)
+        ct = par.get("x0", 0.0)
         c = np.zeros(nt)
         for i in range(nt):
             ct = ct * decay + increase[i]

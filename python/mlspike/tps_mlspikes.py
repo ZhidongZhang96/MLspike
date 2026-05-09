@@ -310,7 +310,7 @@ def _backward_fixbaseline(F: np.ndarray, par: Dict[str, Any]):
             if do_map:
                 n[t, 0] = N[cidx, bidx, t]
                 xest[t, 0] = np.minimum(xest[t - 1, 0] * decay + n[t, 0], cmax)
-                cidx = int(np.clip(round(float(xest[t, 0] / dc)), 0, nc - 1))
+                cidx = int(np.clip(np.round(xest[t, 0] / dc), 0, nc - 1))
             elif do_sample:
                 nspike = np.arange(nspikemax + 1)
                 ct = xest[t - 1][:, None] * decay + nspike[None, :]
@@ -498,10 +498,10 @@ def _backward_driftstate(F: np.ndarray, par: Dict[str, Any]):
         else:
             if do_map:
                 xest[t, 1, 0] = coerce(xest[t - 1, 1, 0] + D[cidx, bidx, t], (baselineinterval[0], baselineinterval[1]))
-                bidx = int(np.clip(round((xest[t, 1, 0] - bb[0]) / db), 0, nb - 1))
+                bidx = int(np.clip(np.round((xest[t, 1, 0] - bb[0]) / db), 0, nb - 1))
                 n[t, 0] = N[cidx, bidx, t]
                 xest[t, 0, 0] = min(xest[t - 1, 0, 0] * decay + n[t, 0], cmax)
-                cidx = int(np.clip(round(xest[t, 0, 0] / dc), 0, nc - 1))
+                cidx = int(np.clip(np.round(xest[t, 0, 0] / dc), 0, nc - 1))
             elif do_sample:
                 for k in range(nsample):
                     ct = xest[t - 1, 0, k] * decay + np.arange(nspikemax + 1)
