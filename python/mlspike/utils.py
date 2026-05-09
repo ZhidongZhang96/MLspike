@@ -8,6 +8,7 @@ import numpy as np
 
 
 ArrayLike = Any
+# Minimum length used to detect count vectors (matches MATLAB heuristics).
 MIN_ARRAY_SIZE_FOR_MODE_DETECTION = 5
 
 

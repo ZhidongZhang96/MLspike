@@ -7,6 +7,7 @@ import numpy as np
 from .params import calcium_default_params
 from .utils import is_spike_count_vector, struct_merge, timevector
 
+# Maximum window (seconds) to include 3-exponential responses.
 MAX_EXP_WINDOW = 5.0
 
 

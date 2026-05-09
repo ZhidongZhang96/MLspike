@@ -4,7 +4,8 @@ from typing import Any, Dict, List, Tuple
 
 import numpy as np
 
-PERCENT_SCALE = 100.0
+# Scale factor to match MATLAB's percent-based amplitude reporting.
+AMPLITUDE_SCALE = 100.0
 
 from .params import autocalibration_default_params
 from .spk_autosigma import spk_autosigma
@@ -167,7 +168,7 @@ def _detect_events(calcium, n, fit, drift, pax, par):
             i += 1
             continue
         kept_events.append(idx1 * dt)
-        kept_nn[idx1] = int(round(ni * par["a"] * PERCENT_SCALE))
+        kept_nn[idx1] = int(round(ni * par["a"] * AMPLITUDE_SCALE))
         lastevent = tj
         i += 1
 
@@ -215,7 +216,7 @@ def _energy(tau, events, F, dt, pax):
         Fpred.append(pred)
         dif.append(Fi - pred)
         amps.append(amps_i)
-    error = rms(np.concatenate(dif)) * PERCENT_SCALE
+    error = rms(np.concatenate(dif)) * AMPLITUDE_SCALE
     return error, Fpred, amps
 
 
@@ -246,7 +247,7 @@ def _energycalib(amp, tau, spikes, F, dt, pax):
         dif.append(Fi - fit_i)
         fit.append(fit_i)
         drift.append(drift_i)
-    error = rms(np.concatenate(dif)) * PERCENT_SCALE
+    error = rms(np.concatenate(dif)) * AMPLITUDE_SCALE
     return error, fit, drift
 
 
