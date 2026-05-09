@@ -5,7 +5,9 @@ from typing import Any, Dict, Iterable, Tuple
 import numpy as np
 
 from .params import calcium_default_params
-from .utils import struct_merge, timevector
+from .utils import is_spike_count_vector, struct_merge, timevector
+
+MAX_EXP_WINDOW = 5.0
 
 
 def spk_calcium(*args, **kwargs):
@@ -42,7 +44,7 @@ def spk_calcium(*args, **kwargs):
 
     ndata = len(spikes)
     nt = None
-    if spikes and len(spikes[0]) > 0 and np.all(np.mod(spikes[0], 1) == 0) and len(spikes[0]) >= 5 and np.any(spikes[0] == 0):
+    if spikes and len(spikes[0]) > 0 and is_spike_count_vector(spikes[0]):
         nt = len(spikes[0])
 
     if par["T"] is None:
@@ -147,7 +149,7 @@ def _forward(spikes: np.ndarray, par: Dict[str, Any]):
         ypred = np.zeros(nt)
         for tk in spikesactive:
             tti = tt - tk
-            idx = (tti > 0) & (tti < 5)
+            idx = (tti > 0) & (tti < MAX_EXP_WINDOW)
             tti = tti[idx]
             ypred[idx] += (tti > 0) * (1 - np.exp(-tti / ton)) * (a1 * np.exp(-tti / t1) + a2 * np.exp(-tti / t2))
         if pnonlin is not None:

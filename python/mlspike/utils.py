@@ -8,6 +8,7 @@ import numpy as np
 
 
 ArrayLike = Any
+MIN_ARRAY_SIZE_FOR_MODE_DETECTION = 5
 
 
 def as_list(value: Any) -> List[Any]:
@@ -75,7 +76,7 @@ def timevector(values: ArrayLike, dt: ArrayLike, mode: str | None = None) -> Any
         return arr.copy()
 
     if mode is None:
-        if arr.ndim == 1 and np.all(np.mod(arr, 1) == 0) and arr.size >= 5 and np.any(arr == 0):
+        if is_spike_count_vector(arr):
             mode = "times"
         else:
             mode = "counts"
@@ -93,6 +94,15 @@ def counts_to_times(counts: np.ndarray, dt: ArrayLike) -> np.ndarray:
         dt = float(np.mean(np.diff(np.asarray(dt))))
     times = np.repeat(np.arange(len(counts)), counts) * float(dt)
     return times.astype(float)
+
+
+def is_spike_count_vector(values: ArrayLike) -> bool:
+    arr = np.asarray(values)
+    if arr.ndim != 1:
+        return False
+    if arr.size < MIN_ARRAY_SIZE_FOR_MODE_DETECTION:
+        return False
+    return np.any(arr == 0) and np.all(np.mod(arr, 1) == 0)
 
 
 def times_to_counts(times: np.ndarray, dt: ArrayLike) -> np.ndarray:

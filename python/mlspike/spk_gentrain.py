@@ -4,6 +4,7 @@ from typing import Iterable, List
 
 import numpy as np
 
+# Shape parameter for the Poisson jitter used to randomize burst inter-spike intervals.
 BURST_ISI_SHAPE = 10
 
 
