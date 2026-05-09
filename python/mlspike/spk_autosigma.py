@@ -35,7 +35,8 @@ def spk_autosigma(calcium, dt: float, psig: dict | str | None = None) -> float:
             sigma_est.append(rms(np.diff(x)) / np.sqrt(2))
             continue
         fnyquist = 1.0 / (2 * dt)
-        if fnyquist < 1.5 * (freqs[0] if isinstance(freqs, (list, tuple)) else freqs):
+        freq_min = freqs[0] if isinstance(freqs, (list, tuple)) else freqs
+        if fnyquist < 1.5 * freq_min:
             raise ValueError("sampling rate too low for proper estimation of the noise")
         if np.isscalar(freqs):
             freqs = [float(freqs), fnyquist]

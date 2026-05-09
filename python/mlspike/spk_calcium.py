@@ -161,7 +161,7 @@ def _forward(spikes: np.ndarray, par: Dict[str, Any]):
     F0 = (1 + ypred) * par["F0"]
 
     drift = np.zeros(nt)
-    if par["drift"]["parameter"]:
+    if par["drift"]["parameter"] is not None and par["drift"]["parameter"] != 0:
         if par["drift"]["method"] == "state":
             innovation = par["drift"]["parameter"] * np.random.randn(nt)
             memory = np.exp(-np.arange(0, 40 + dt, dt) / 10)

@@ -204,7 +204,7 @@ def _backward_fixbaseline(F: np.ndarray, par: Dict[str, Any]):
     do_map = estimate == "map"
     do_proba = estimate == "proba"
     do_sample = estimate in {"sample", "samples"}
-    interpmode = "linear" if do_map else "linear"
+    interpmode = par["algo"]["interpmode"] if do_map else "linear"
     nsample = par["algo"]["nsample"] or 200
 
     nc = par["algo"]["nc"] or par["algo"]["nc_norise"]
@@ -238,8 +238,10 @@ def _backward_fixbaseline(F: np.ndarray, par: Dict[str, Any]):
         MM_cat = np.vstack(MM)
     else:
         MS = np.zeros_like(MM[0])
-        for i in range(1, nspikemax + 1):
+        NS = np.zeros_like(MM[0])
+        for i in range(nspikemax + 1):
             MS += pspike[i] * MM[i]
+            NS += i * pspike[i] * MM[i]
 
     dye = 1 + a * cc / (1 + sat * cc)
     xxmeasure = dye[:, None] * bb[None, :]
@@ -333,7 +335,7 @@ def _backward_fixbaseline(F: np.ndarray, par: Dict[str, Any]):
                 lmin = np.min(lt1)
                 pt1 = np.exp(lmin - lt1)
                 pt = MS @ pt1
-                nt = np.zeros_like(pt)
+                nt = (NS @ pt1) / np.maximum(pt, 1e-300)
                 lt = lmin - np.log(np.maximum(pt, 1e-300))
                 lty = lt + L[:, :, t]
                 pty = log2proba(lty)
