@@ -4,6 +4,8 @@ from typing import Iterable, List
 
 import numpy as np
 
+BURST_ISI_SHAPE = 10
+
 
 def spk_gentrain(rate: float, T: float, mode: str = "fix-rate", parameters: Iterable[float] | None = None, repeat: int | None = None):
     if parameters is None:
@@ -43,7 +45,7 @@ def spk_gentrain(rate: float, T: float, mode: str = "fix-rate", parameters: Iter
             for _ in range(nburst):
                 nspk = np.random.poisson(nperburst)
                 if nspk > 0:
-                    bursts.append(np.random.rand() * T + np.cumsum(isi * (np.random.poisson(10, size=nspk) / 10)))
+                    bursts.append(np.random.rand() * T + np.cumsum(isi * (np.random.poisson(BURST_ISI_SHAPE, size=nspk) / BURST_ISI_SHAPE)))
             if bursts:
                 trains.append(np.sort(np.concatenate(bursts)))
             else:

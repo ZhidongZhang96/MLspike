@@ -185,8 +185,6 @@ def log2proba(logp: np.ndarray, axis: int | None = None) -> np.ndarray:
     prob = np.exp(lmin - logp)
     prob_sum = np.sum(prob, axis=axis, keepdims=True)
     prob = np.divide(prob, prob_sum, out=np.zeros_like(prob), where=prob_sum != 0)
-    if axis is None:
-        return prob
     return prob
 
 

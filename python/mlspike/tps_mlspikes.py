@@ -123,12 +123,6 @@ def _forward(n: np.ndarray, par: Dict[str, Any]):
     c0 = par["c0"]
 
     T = len(n)
-    if len(n) != T:
-        spikes = n
-        n = np.zeros(T)
-        for t in spikes:
-            idx = int(np.clip(round((t) / dt), 0, T - 1))
-            n[idx] += 1
 
     decay = np.exp(-dt / tau)
     c = np.zeros(T)
