@@ -34,6 +34,17 @@ Simulation and estimation run with parameters, default parameters are easily obt
  
 Help for each function can be provided by typing `help function_name`.
 Additional help can be found in the Help browser: type `doc`, then go to 'Supplemental Software' > 'MLspike toolbox'.
+
+### Python (experimental)
+
+An experimental Python port lives in `python/mlspike`. It provides equivalents of `tps_mlspikes`, `spk_est`, `spk_calcium`, `spk_gentrain`, `spk_autosigma`, and `spk_autocalibration`.
+
+Basic usage (from the repo root):
+
+```
+pip install -r python/requirements.txt
+PYTHONPATH=python python -c "from mlspike import tps_mlspikes; par=tps_mlspikes('par'); print(par)"
+```
  
 ### Going further
 
